@@ -6,13 +6,22 @@ class ScoreField extends StatelessWidget {
   const ScoreField({
     super.key,
     required this.score,
+    required this.isFavorite,
+    required this.onFavorite,
   });
 
   final ScoreEntity score;
+  final bool isFavorite;
+  final Function(ScoreEntity) onFavorite;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      leading: IconButton(
+        onPressed: () => onFavorite(score),
+        icon: Icon(isFavorite ? Icons.star : Icons.star_border,
+            color: isFavorite ? Colors.green : Colors.amber),
+      ),
       contentPadding: context.paddingPage,
       title: Column(
         children: [

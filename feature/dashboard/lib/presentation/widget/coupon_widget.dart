@@ -23,6 +23,7 @@ class CouponWidget extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return CouponCard(
+                      favoriteScores: state.favoriteScores ?? [],
                       score: state.couponMap.keys.elementAt(index),
                       onSelectedCoupon: (coupon) => context
                           .read<DashboardCubit>()

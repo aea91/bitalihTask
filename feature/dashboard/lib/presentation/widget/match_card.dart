@@ -46,7 +46,11 @@ class MatchCard extends StatelessWidget {
           child: Column(
             children: [
               ScoreHeader(score: score),
-              ScoreField(score: score),
+              ScoreField(
+                score: score,
+                isFavorite: isFavorite,
+                onFavorite: onFavorite,
+              ),
               OddsField(score: score, onSelectedCoupon: onSelectedCoupon, couponMap: couponMap),
               const SizedBox(height: 16),
             ],
