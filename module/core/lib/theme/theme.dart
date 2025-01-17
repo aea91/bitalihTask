@@ -24,7 +24,7 @@ const _colorScheme = ColorScheme(
   brightness: Brightness.light,
 );
 
-final ThemeData ContactTheme = ThemeData(
+final ThemeData BitalihTheme = ThemeData(
   useMaterial3: false,
   fontFamily: 'Sf-pro-display',
   brightness: Brightness.light,

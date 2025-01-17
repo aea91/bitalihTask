@@ -24,7 +24,7 @@ class BaseContactCard extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         visualDensity: VisualDensity.compact,
-        leading: Icon(Icons.person),
+        leading: const Icon(Icons.person),
         title: Text(
           name,
           style: theme.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),

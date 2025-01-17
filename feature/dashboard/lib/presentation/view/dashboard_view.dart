@@ -33,7 +33,7 @@ class _DashboardViewState extends State<DashboardView> {
             listener: (context, state) {},
             builder: (context, state) {
               if (state.status == DashboardStatus.loading) {
-                return const Center(child: CircularProgressIndicator());
+                return BaseView(body: const Center(child: CircularProgressIndicator()));
               }
               return BaseView(
                 appBar: AppBar(
