@@ -244,4 +244,8 @@ class DashboardCubit extends Cubit<DashboardState> {
       ),
     );
   }
+
+  void clearException() {
+    emit(state.copyWith(exception: null));
+  }
 }

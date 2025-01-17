@@ -10,6 +10,7 @@ import 'package:dashboard/utils/dashboard_pages.dart';
 import 'package:dashboard/utils/injection_contatiner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uikit/snackbar/base_snackbar.dart';
 
 part 'dashboard_subview.dart';
 
@@ -30,7 +31,15 @@ class _DashboardViewState extends State<DashboardView> {
         builder: (context, snapshot) {
           context.read<DashboardCubit>().triggerLiveScore();
           return BlocConsumer<DashboardCubit, DashboardState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state.status == DashboardStatus.error && state.exception != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  BaseSnackbar.snackBar(context, state.exception!.message ?? "", onVisible: () {
+                    context.read<DashboardCubit>().clearException();
+                  }),
+                );
+              }
+            },
             builder: (context, state) {
               if (state.status == DashboardStatus.loading) {
                 return BaseView(body: const Center(child: CircularProgressIndicator()));
