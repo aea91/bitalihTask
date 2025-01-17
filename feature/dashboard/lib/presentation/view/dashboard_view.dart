@@ -27,7 +27,7 @@ class _DashboardViewState extends State<DashboardView> {
     return BlocProvider(
       create: (context) => sl<DashboardCubit>()..init(),
       child: StreamBuilder(
-        stream: Stream.periodic(const Duration(seconds: 120)),
+        stream: Stream.periodic(const Duration(seconds: 5)),
         builder: (context, snapshot) {
           context.read<DashboardCubit>().triggerLiveScore();
           return BlocConsumer<DashboardCubit, DashboardState>(
