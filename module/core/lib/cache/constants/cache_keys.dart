@@ -1,1 +1,1 @@
-enum CacheKeys { token, keyword, fcmToken }
+enum CacheKeys { favoriteScores }

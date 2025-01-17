@@ -13,8 +13,6 @@ dependencies:
     sdk: flutter
   core:
     path: ../../module/core
-  auth:
-    path: ../../feature/auth
   dashboard:
     path: ../../feature/dashboard
   packages:

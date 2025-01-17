@@ -6,14 +6,14 @@ class BaseResponseModel {
   BaseResponseModel({
     this.data,
     this.success,
-    this.timeStamp,
-    this.message,
+    this.error,
+    this.code,
   });
 
   dynamic data;
   bool? success;
-  String? timeStamp;
-  String? message;
+  String? error;
+  int? code;
 
   factory BaseResponseModel.fromJson(Map<String, dynamic> json) {
     return _$BaseResponseModelFromJson(json);

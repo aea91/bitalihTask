@@ -1,4 +1,3 @@
-import 'package:auth/utils/auth_go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:welcome/splash/presentation/splash_view.dart';
@@ -14,6 +13,5 @@ final router = GoRouter(
       builder: (context, state) => const SplashView(),
     ),
     ...welcoeGoRouter,
-    ...authGoRouter,
   ],
 );

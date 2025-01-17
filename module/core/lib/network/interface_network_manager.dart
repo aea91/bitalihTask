@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 abstract class InterfaceNetworkManager {
   init({
     required String baseUrl,
@@ -12,6 +10,8 @@ abstract class InterfaceNetworkManager {
 
     /// receive time out seconds
     required int receiveTimeOut,
+    required String apiKey,
+    required String apiSecret,
   });
 
   Future dioGet({
@@ -43,12 +43,5 @@ abstract class InterfaceNetworkManager {
     required Function(Map<String, dynamic> json)? fromJson,
     required String token,
     Map<String, dynamic>? queryParam,
-  });
-
-  Future postForm({
-    required String path,
-    required FormData formData,
-    required String token,
-    required Function(Map<String, dynamic> json)? fromJson,
   });
 }

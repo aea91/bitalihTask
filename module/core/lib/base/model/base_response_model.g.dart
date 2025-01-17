@@ -6,18 +6,16 @@ part of 'base_response_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BaseResponseModel _$BaseResponseModelFromJson(Map<String, dynamic> json) =>
-    BaseResponseModel(
+BaseResponseModel _$BaseResponseModelFromJson(Map<String, dynamic> json) => BaseResponseModel(
       data: json['data'],
       success: json['success'] as bool?,
-      timeStamp: json['timeStamp'] as String?,
-      message: json['message'] as String?,
+      error: json['error'] as String?,
+      code: json['code'] as int?,
     );
 
-Map<String, dynamic> _$BaseResponseModelToJson(BaseResponseModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$BaseResponseModelToJson(BaseResponseModel instance) => <String, dynamic>{
       'data': instance.data,
       'success': instance.success,
-      'timeStamp': instance.timeStamp,
-      'message': instance.message,
+      'error': instance.error,
+      'code': instance.code,
     };

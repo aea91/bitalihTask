@@ -12,6 +12,8 @@ class NetworkManager implements InterfaceNetworkManager {
   // ignore: non_constant_identifier_names
   final String TAG = "NetworkManager";
   late Dio _dio;
+  late String _apiKey;
+  late String _apiSecret;
   static NetworkManager? _instance;
   static NetworkManager? get instance {
     _instance ??= NetworkManager._init();
@@ -32,7 +34,11 @@ class NetworkManager implements InterfaceNetworkManager {
 
     /// receive time out seconds
     required int receiveTimeOut,
+    required String apiKey,
+    required String apiSecret,
   }) {
+    _apiKey = apiKey;
+    _apiSecret = apiSecret;
     final baseOptions = BaseOptions(
       baseUrl: baseUrl,
       sendTimeout: Duration(seconds: sendTimeOut),
@@ -79,7 +85,6 @@ class NetworkManager implements InterfaceNetworkManager {
               await SharedManager.instance!.removeAll();
               ContactLogger.instance!.error(TAG,
                   "baseUrl: ${e.requestOptions.baseUrl} path: ${e.requestOptions.path} header: ${e.requestOptions.headers}");
-              GoManager.instance.go(path: '/login_view');
             default:
               if (e is HttpException) {
                 GoManager.instance.replace(
@@ -113,14 +118,14 @@ class NetworkManager implements InterfaceNetworkManager {
       String? token,
       Map<String, dynamic>? queryParam,
       required Function(Map<String, dynamic> json) fromJson}) async {
-    print("get request");
     try {
       _setHeaders(token);
       queryParam = _cleanNullParams(queryParam);
 
-      print("get queryParam: $queryParam path: $path baseUrl: ${_dio.options.baseUrl}");
+      path = "$path?key=$_apiKey&secret=$_apiSecret";
 
       final response = await _dio.get(path, queryParameters: queryParam);
+
       return _handleResponse(response: response, fromJson: fromJson);
     } on DioException catch (e) {
       await _handleError(e);
@@ -152,7 +157,7 @@ class NetworkManager implements InterfaceNetworkManager {
       return data as T;
     }
 
-    throw NetworkException(message: baseResponse.message);
+    throw NetworkException(message: baseResponse.error);
   }
 
   /// Merkezi hata yönetimi
@@ -166,7 +171,6 @@ class NetworkManager implements InterfaceNetworkManager {
     switch (e.response?.statusCode) {
       case HttpStatus.unauthorized:
         await SharedManager.instance?.removeAll();
-        GoManager.instance.go(path: '/login_view');
         break;
       default:
         final errorMessage = e is HttpException
@@ -215,6 +219,8 @@ class NetworkManager implements InterfaceNetworkManager {
 
     ContactLogger.instance!.warning(TAG, "json: $json");
 
+    path += "?key=$_apiKey&secret=$_apiSecret";
+
     var response = await _dio.post(path, data: json, queryParameters: queryParam);
 
     ContactLogger.instance!.info(TAG, 'post path: $path status: ${response.statusCode}');
@@ -237,7 +243,7 @@ class NetworkManager implements InterfaceNetworkManager {
         return data;
       }
     } else {
-      return NetworkException(message: baseResponse.message);
+      return NetworkException(message: baseResponse.error);
     }
   }
 
@@ -268,6 +274,8 @@ class NetworkManager implements InterfaceNetworkManager {
       ContactLogger.instance!.warning(TAG, "json: $json");
     }
 
+    path += "?key=$_apiKey&secret=$_apiSecret";
+
     ContactLogger.instance!.info(TAG, 'put path: $path queryParam: $queryParam json: $json');
 
     var response = await _dio.put(path, data: json, queryParameters: queryParam);
@@ -294,35 +302,7 @@ class NetworkManager implements InterfaceNetworkManager {
         return data;
       }
     } else {
-      return NetworkException(message: baseResponse.message);
-    }
-  }
-
-  @override
-  Future postForm({
-    required String path,
-    required FormData formData,
-    required String token,
-    required Function(Map<String, dynamic> json)? fromJson,
-  }) async {
-    _dio.options.headers['Authorization'] = "Bearer $token";
-    _dio.options.responseType = ResponseType.json;
-
-    var response = await _dio.post(
-      path,
-      data: formData,
-    );
-
-    final responseBody = response.data;
-
-    BaseResponseModel baseResponse = BaseResponseModel.fromJson(responseBody);
-
-    if (baseResponse.success == true) {
-      if (fromJson == null) return null;
-      final data = baseResponse.data;
-      return fromJson(data as Map<String, dynamic>);
-    } else {
-      return NetworkException(message: baseResponse.message);
+      return NetworkException(message: baseResponse.error);
     }
   }
 
@@ -340,6 +320,8 @@ class NetworkManager implements InterfaceNetworkManager {
     if (queryParam != null) {
       queryParam = Map.fromEntries(queryParam.entries.where((entry) => entry.value != null));
     }
+
+    path += "?key=$_apiKey&secret=$_apiSecret";
 
     ContactLogger.instance!.warning(TAG, "path: $path queryParam: $queryParam ");
 
@@ -360,15 +342,7 @@ class NetworkManager implements InterfaceNetworkManager {
         return data;
       }
     } else {
-      return NetworkException(message: baseResponse.message);
+      return NetworkException(message: baseResponse.error);
     }
-  }
-
-  Future<Response> downloadImage({required String imageUrl}) async {
-    _dio.options.responseType = ResponseType.bytes;
-    _dio.options.followRedirects = false;
-    Response response = await _dio.get(imageUrl);
-
-    return response;
   }
 }

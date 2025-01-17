@@ -14,6 +14,10 @@ class DebugEnv implements AppEnv, AppEnvFields {
   final String baseUrl = _Env.baseUrl;
 
   @override
-  @EnviedField(varName: 'TOKEN')
-  final String token = _Env.token;
+  @EnviedField(varName: 'APIKEY')
+  final String apiKey = _Env.apiKey;
+
+  @override
+  @EnviedField(varName: 'APISECRET')
+  final String apiSecret = _Env.apiSecret;
 }

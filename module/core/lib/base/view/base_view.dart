@@ -4,12 +4,13 @@ class BaseView extends StatelessWidget {
   final Widget body;
   final AppBar? appBar;
   final Widget? floatingActionButton;
-
+  final Widget? bottomNavigationBar;
   const BaseView({
     super.key,
     required this.body,
     this.appBar,
     this.floatingActionButton,
+    this.bottomNavigationBar,
   });
 
   @override
@@ -18,6 +19,7 @@ class BaseView extends StatelessWidget {
       appBar: appBar,
       body: SafeArea(child: body),
       floatingActionButton: floatingActionButton,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

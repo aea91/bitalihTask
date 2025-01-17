@@ -1,6 +1,5 @@
-import 'package:dashboard/data/model/user_response_model.dart';
+import 'package:dashboard/data/model/live_score_response_model.dart';
 
 abstract class DashboardDataSource {
-  Future<List<UserResponseModel>> fetchUsers(
-      {required String? query, required int? page, required int? limit});
+  Future<LiveScoreResponseModel> fetchLiveScores();
 }
